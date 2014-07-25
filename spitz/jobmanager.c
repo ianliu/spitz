@@ -26,6 +26,9 @@
 #include "log.h"
 #include "barray.h"
 
+typedef void * (*spitz_ctor_t) (int, char **);
+typedef int    (*spitz_tgen_t) (void *, struct byte_array *);
+
 struct task {
 	size_t id;
 	struct byte_array data;
@@ -46,16 +49,13 @@ void job_manager(int argc, char *argv[], char *so, struct byte_array *final_resu
 
 	struct task *iter, *prev, *aux, *sent = NULL;
 
-	void* (*setup) (int, char**);
-	int (*task_gen) (void *, struct byte_array *);
-
-	*(void **) (&setup)    = dlsym(ptr, "spits_setup_job_manager");
-	*(void **) (&task_gen) = dlsym(ptr, "spits_generate_pit");
+	spitz_ctor_t ctor = dlsym(ptr, "spits_job_manager_new");
+	spitz_tgen_t tgen = dlsym(ptr, "spits_job_manager_next_task");
 
 	enum message_type type;
 	struct byte_array ba;
 	byte_array_init(&ba, 10);
-	void *user_data = setup(argc, argv);
+	void *user_data = ctor(argc, argv);
 	size_t tid, task_id = 0;
 	while (1) {
 		int rank;
@@ -66,7 +66,7 @@ void job_manager(int argc, char *argv[], char *so, struct byte_array *final_resu
 			case MSG_READY:
 				byte_array_clear(&ba);
 				byte_array_pack64(&ba, task_id);
-				if (task_gen(user_data, &ba)) {
+				if (tgen(user_data, &ba)) {
 					node = malloc(sizeof(*node));
 					node->id = task_id;
 					byte_array_init(&node->data, ba.len);

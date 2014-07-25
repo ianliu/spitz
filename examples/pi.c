@@ -8,14 +8,14 @@ struct pi_jm {
 	int numpoints;
 };
 
-void *spits_setup_job_manager(int argc, char *argv[])
+void *spits_job_manager_new(int argc, char *argv[])
 {
 	struct pi_jm *self = malloc(sizeof(*self));
 	self->numpoints = atoi(argv[0]);
 	return self;
 }
 
-int spits_generate_pit(void *user_data, struct byte_array *ba)
+int spits_job_manager_next_task(void *user_data, struct byte_array *ba)
 {
 	struct pi_jm *self = user_data;
 	if (self->numpoints == 0)
