@@ -1,4 +1,4 @@
-#include <barray.h>
+#include <spitz/barray.h>
 #include <stdio.h>
 
 /*---------------------------------------------------------------------------*/
