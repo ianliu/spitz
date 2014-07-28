@@ -23,12 +23,16 @@ libdir = $(prefix)/lib
 bindir = $(prefix)/bin
 incdir = $(prefix)/include
 
+INST_INC = barray.h stream.hpp spitz.hpp
+INST_LIB = libspitz.so
+INST_BIN = spitz
+
 install: libspitz.so spitz
 	install -m 755 -d $(libdir)
 	install -m 755 -d $(bindir)
 	install -m 755 -d $(incdir)/spitz
-	install -m 755 libspitz.so $(libdir)
-	install -m 755 spitz $(bindir)
-	install -m 755 barray.h $(incdir)/spitz
+	install -m 755 $(INST_LIB) $(libdir)
+	install -m 755 $(INST_BIN) $(bindir)
+	install -m 755 $(INST_INC) $(incdir)/spitz
 
 .PHONY: all clean
