@@ -20,3 +20,10 @@ test: pi.so picpp.so
 
 clean:
 	-rm -f pi.so picpp.so
+
+prefix = /usr/local
+datadir = $(prefix)/share/spitz
+
+install:
+	install -m 0755 -d $(DESTDIR)$(datadir)
+	install -m 0644 pi.c pi.cpp Makefile $(DESTDIR)$(datadir)
