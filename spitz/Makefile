@@ -33,6 +33,6 @@ install: libspitz.so spitz
 	install -m 755 -d $(DESTDIR)$(incdir)/spitz
 	install -m 755 $(INST_LIB) $(DESTDIR)$(libdir)
 	install -m 755 $(INST_BIN) $(DESTDIR)$(bindir)
-	install -m 755 $(INST_INC) $(DESTDIR)$(incdir)/spitz
+	install -m 644 $(INST_INC) $(DESTDIR)$(incdir)/spitz
 
 .PHONY: all clean
