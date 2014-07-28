@@ -1,14 +1,15 @@
 CPPFLAGS = -I..
 CFLAGS = -shared -Wall -Wextra -fPIC -g3 -O0
+CXXFLAGS = $(CFLAGS)
 LDFLAGS = -L../spitz -lspitz
 
 all: pi.so picpp.so
 
 pi.so: pi.c
-	gcc $(CFLAGS) $(CPPFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ $^ $(LDFLAGS)
 
 picpp.so: pi.cpp
-	g++ $(CFLAGS) $(CPPFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -o $@ $^ $(LDFLAGS)
 
 test: pi.so picpp.so
 	# Set some environment variables

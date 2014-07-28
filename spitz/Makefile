@@ -10,7 +10,7 @@ spitz: $(SRC) libspitz.so
 	mpicc $(CFLAGS) $(CPPFLAGS) -o $@ $(SRC) $(LDFLAGS)
 
 libspitz.so: barray.c
-	gcc -shared -fPIC -Wl,-soname,$@ -o $@ $^
+	$(CC) $(CFLAGS) -shared -fPIC -Wl,-soname,$@ -o $@ $^
 
 clean:
 	-rm -f spitz libspitz.so
