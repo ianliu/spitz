@@ -25,7 +25,7 @@
 #include <arpa/inet.h>
 
 #define RETURN_FALSE_IF_NOT_ENOUGHT_SIZE(ba, sz) do { \
-	if ((ba)->len - (sz)  < (ba)->iptr - (ba)->ptr)\
+	if ((ba)->ptr + (ba)->len < (ba)->iptr + (sz))\
 		return 0; \
 	} while(0)
 
@@ -89,7 +89,7 @@ void byte_array_clear(struct byte_array *ba)
 
 void byte_array_print(struct byte_array *ba)
 {
-	int i;
+	size_t i;
 	for (i=0; i < ba->len; i++)
 		printf("%02X ", ba->ptr[i]);
 	printf("\n");
