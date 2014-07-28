@@ -28,11 +28,11 @@ INST_LIB = libspitz.so
 INST_BIN = spitz
 
 install: libspitz.so spitz
-	install -m 755 -d $(libdir)
-	install -m 755 -d $(bindir)
-	install -m 755 -d $(incdir)/spitz
-	install -m 755 $(INST_LIB) $(libdir)
-	install -m 755 $(INST_BIN) $(bindir)
-	install -m 755 $(INST_INC) $(incdir)/spitz
+	install -m 755 -d $(DESTDIR)$(libdir)
+	install -m 755 -d $(DESTDIR)$(bindir)
+	install -m 755 -d $(DESTDIR)$(incdir)/spitz
+	install -m 755 $(INST_LIB) $(DESTDIR)$(libdir)
+	install -m 755 $(INST_BIN) $(DESTDIR)$(bindir)
+	install -m 755 $(INST_INC) $(DESTDIR)$(incdir)/spitz
 
 .PHONY: all clean
