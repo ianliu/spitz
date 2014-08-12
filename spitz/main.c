@@ -395,6 +395,14 @@ int main(int argc, char *argv[])
 	MPI_Init(&argc, &argv);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
+	char *debug = getenv("SPITS_DEBUG_SLEEP");
+	if (debug) {
+		int amount = atoi(debug);
+		pid_t pid = getpid();
+		printf("Rank %d at pid %d\n", rank, pid);
+		sleep(amount);
+	}
+
 	char *loglvl = getenv("SPITS_LOG_LEVEL");
 	if (loglvl)
 		LOG_LEVEL = atoi(loglvl);
@@ -406,14 +414,6 @@ int main(int argc, char *argv[])
 	char *fifosz = getenv("SPITS_TMCACHE_SIZE");
 	if (fifosz)
 		FIFOSZ = atoi(fifosz);
-
-	char *debug = getenv("SPITS_DEBUG_SLEEP");
-	if (debug) {
-		int amount = atoi(debug);
-		pid_t pid = getpid();
-		printf("Rank %d at pid %d\n", rank, pid);
-		sleep(amount);
-	}
 
 	if (rank == 0 && LOG_LEVEL >= 1)
 		printf("Welcome to spitz " SPITZ_VERSION "\n");
