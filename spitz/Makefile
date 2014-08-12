@@ -23,7 +23,7 @@ libdir = $(prefix)/lib
 bindir = $(prefix)/bin
 incdir = $(prefix)/include
 
-INST_INC = barray.h stream.hpp spitz.hpp
+INST_INC = barray.h spitz.h stream.hpp spitz.hpp
 INST_LIB = libspitz.so
 INST_BIN = spitz
 

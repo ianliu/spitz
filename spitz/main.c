@@ -37,6 +37,7 @@
 #define SPITZ_VERSION "0.1.0"
 
 int LOG_LEVEL = 0;
+static __thread int workerid = -1;
 
 static int NTHREADS = 3;
 static int FIFOSZ = 10;
@@ -47,6 +48,7 @@ struct result_node {
 };
 
 struct thread_data {
+	int id;
 	struct cfifo f;
 	pthread_mutex_t tlock;
 	pthread_mutex_t rlock;
@@ -57,6 +59,25 @@ struct thread_data {
 	int argc;
 	char **argv;
 };
+
+int spitz_get_worker_id(void)
+{
+	return workerid;
+}
+
+int spitz_get_num_workers(void)
+{
+	int size;
+	MPI_Comm_size(MPI_COMM_WORLD, &size);
+	return (size - 2) * NTHREADS;
+}
+
+static int get_task_manager_id(void)
+{
+	int rank;
+	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+	return rank - 2;
+}
 
 void run(int argc, char *argv[], char *so, struct byte_array *final_result)
 {
@@ -141,6 +162,8 @@ void *worker(void *ptr)
 	size_t task_id;
 	struct thread_data *d = ptr;
 	struct byte_array task;
+
+	workerid = d->id;
 
 	void* (*worker_new) (int, char **);
 	worker_new = dlsym(d->handle, "spits_worker_new");
@@ -349,9 +372,11 @@ void start_slave_processes(int argc, char *argv[])
 			d.argc = argc;
 			d.argv = argv;
 
-			int i;
-			for (i = 0; i < NTHREADS; i++)
+			int i, tmid = get_task_manager_id();
+			for (i = 0; i < NTHREADS; i++) {
+				d.id = NTHREADS * tmid + i;
 				pthread_create(&t[i], NULL, worker, &d);
+			}
 			task_manager(&d);
 			d.running = 0;
 
