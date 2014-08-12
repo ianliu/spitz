@@ -1,2 +1,4 @@
 examples/pi.so
 libspitz.so
+examples/picpp.so
+spitz/spitz
