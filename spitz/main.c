@@ -313,7 +313,7 @@ void start_master_process(int argc, char *argv[], char *so)
 
 	void *ptr = dlopen(so, RTLD_LAZY);
 	if (!ptr) {
-		error("could not open %s", so);
+		error("could not open %s: %s", so, dlerror());
 	}
 
 	int (*spits_main) (int argc, char *argv[],
