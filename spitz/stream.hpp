@@ -30,6 +30,15 @@ namespace spitz {
     public:
       stream(struct byte_array *ba) : ba(ba) { }
 
+      stream& operator<<(const int8_t& v)   { byte_array_pack8(ba, v); return *this; }
+      stream& operator>>(      int8_t& v)   { byte_array_unpack8(ba, &v); return *this; }
+
+      stream& operator<<(const int16_t& v)  { byte_array_pack16(ba, v); return *this; }
+      stream& operator>>(      int16_t& v)  { byte_array_unpack16(ba, &v); return *this; }
+
+      stream& operator<<(const int64_t& v)  { byte_array_pack64(ba, v); return *this; }
+      stream& operator>>(      int64_t& v)  { byte_array_unpack64(ba, &v); return *this; }
+
       stream& operator<<(const uint8_t& v)  { _byte_array_pack8(ba, v); return *this; }
       stream& operator>>(      uint8_t& v)  { _byte_array_unpack8(ba, &v); return *this; }
 
@@ -45,11 +54,23 @@ namespace spitz {
       stream& operator<<(const int& v)      { byte_array_pack32(ba, v); return *this; }
       stream& operator>>(      int& v)      { byte_array_unpack32(ba, &v); return *this; }
 
+      stream& operator<<(const bool& v)     { _byte_array_pack8(ba, v ? 1:0); return *this; }
+      stream& operator>>(      bool& v)     {
+        uint8_t w;
+        byte_array_unpack8(ba, &w);
+        v = w == 0? true : false;
+        return *this;
+      }
+
       stream& operator<<(const float& v)    { byte_array_pack32(ba, v); return *this; }
       stream& operator>>(      float& v)    { byte_array_unpack32(ba, &v); return *this; }
 
       stream& operator<<(const double& v)   { byte_array_pack64(ba, v); return *this; }
       stream& operator>>(      double& v)   { byte_array_unpack64(ba, &v); return *this; }
+
+      size_t size() const {
+        return ba->len - (ba->iptr - ba->ptr);
+      }
   };
 };
 
