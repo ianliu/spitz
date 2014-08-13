@@ -9,7 +9,7 @@ all: spitz
 spitz: $(SRC) libspitz.so
 	mpicc $(CFLAGS) $(CPPFLAGS) -o $@ $(SRC) $(LDFLAGS)
 
-libspitz.so: barray.c
+libspitz.so: barray.c spitz.c
 	$(CC) $(CFLAGS) -shared -fPIC -Wl,-soname,$@ -o $@ $^
 
 clean:

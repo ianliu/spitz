@@ -37,7 +37,8 @@
 #define SPITZ_VERSION "0.1.0"
 
 int LOG_LEVEL = 0;
-static __thread int workerid = -1;
+extern __thread int workerid;
+extern int nworkers;
 
 static int NTHREADS = 3;
 static int FIFOSZ = 10;
@@ -59,18 +60,6 @@ struct thread_data {
 	int argc;
 	char **argv;
 };
-
-int spitz_get_worker_id(void)
-{
-	return workerid;
-}
-
-int spitz_get_num_workers(void)
-{
-	int size;
-	MPI_Comm_size(MPI_COMM_WORLD, &size);
-	return (size - 2) * NTHREADS;
-}
 
 static int get_task_manager_id(void)
 {
@@ -391,9 +380,10 @@ void start_slave_processes(int argc, char *argv[])
 
 int main(int argc, char *argv[])
 {
-	int rank;
+	int rank, size;
 	MPI_Init(&argc, &argv);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+	MPI_Comm_size(MPI_COMM_WORLD, &size);
 
 	char *debug = getenv("SPITS_DEBUG_SLEEP");
 	if (debug) {
@@ -422,6 +412,8 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Usage: SO_PATH\n");
 		return EXIT_FAILURE;
 	}
+
+	nworkers = (size - 2) * NTHREADS;
 
 	char *so = argv[1];
 
