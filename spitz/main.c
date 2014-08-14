@@ -267,7 +267,7 @@ void task_manager(struct thread_data *d)
 
 		switch (type) {
 			case MSG_TASK:
-				debug("sem_wait");
+				debug("waiting task buffer to free some space");
 				sem_wait(&d->sem);
 				byte_array_init(&task, ba.len);
 				byte_array_pack8v(&task, ba.ptr, ba.len);
@@ -287,9 +287,11 @@ void task_manager(struct thread_data *d)
 				break;
 		}
 
-		debug("Trying to flush %d %s...", min_results, b == BLOCKING ? "blocking":"non blocking");
-		tasks -= flush_results(d, min_results, b);
-		debug("I have sent %d tasks\n", tasks);
+		if (alive) {
+			debug("Trying to flush %d %s...", min_results, b == BLOCKING ? "blocking":"non blocking");
+			tasks -= flush_results(d, min_results, b);
+			debug("I have sent %d tasks\n", tasks);
+		}
 	}
 
 	info("terminating task manager");
