@@ -27,7 +27,8 @@ class piw : public spitz::worker {
     void run(spitz::stream& task, spitz::stream& result) {
       double x, y;
       task >> x >> y;
-      result << (x*x + y*y <= 1);
+      uint8_t inside = (x*x + y*y <= 1);
+      result << inside;
     }
 };
 
@@ -42,7 +43,7 @@ class pico : public spitz::committer {
       , inside(0) { }
 
     void commit_task(spitz::stream& result) {
-      int i;
+      uint8_t i;
       result >> i;
       inside += i;
     }

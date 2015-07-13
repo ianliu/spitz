@@ -59,7 +59,7 @@ void spits_worker_run(void *user_data, struct byte_array *task, struct byte_arra
 /* COMMIT -------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*/
 struct pi_commit {
-	int count;
+	int inside;
 	int numpoints;
 };
 
@@ -68,7 +68,7 @@ void *spits_setup_commit(int argc, char *argv[])
 	UNUSED(argc);
 
 	struct pi_commit *self = malloc(sizeof(*self));
-	self->count = 0;
+	self->inside = 0;
 	self->numpoints = atoi(argv[0]);
 	return self;
 }
@@ -79,7 +79,7 @@ void spits_commit_pit(void *user_data, struct byte_array *result)
 
 	uint8_t x;
 	byte_array_unpack8(result, &x);
-	self->count += x;
+	self->inside += x;
 }
 
 void spits_commit_job(void *user_data, struct byte_array *final_result)
@@ -87,6 +87,6 @@ void spits_commit_job(void *user_data, struct byte_array *final_result)
 	UNUSED(final_result);
 
 	struct pi_commit *self = user_data;
-	double pi = 4.0L * self->count / self->numpoints;
+	double pi = 4.0L * self->inside / self->numpoints;
 	printf("pi from C program = %lf\n", pi);
 }

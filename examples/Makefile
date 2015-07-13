@@ -14,7 +14,7 @@ picpp.so: pi.cpp
 test: pi.so picpp.so
 	# Set some environment variables
 	LD_LIBRARY_PATH=$$PWD/../spitz PATH=$$PATH:$$PWD/../spitz \
-			mpirun -np 3 spitz $$PWD/pi.so 10000
+			mpirun -np 3 spitz $$PWD/pi.so    10000
 	LD_LIBRARY_PATH=$$PWD/../spitz PATH=$$PATH:$$PWD/../spitz \
 			mpirun -np 3 spitz $$PWD/picpp.so 10000
 
