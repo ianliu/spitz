@@ -31,8 +31,12 @@ For Arch Linux:
 
 ## Compiling
 
-To compile SPITZ just issue:
+SPITZ uses CMake as a building platform. To compile issue the following
+commands:
 
+    mkdir build
+    cd build
+    cmake ..
     make
 
 ## Examples
@@ -40,21 +44,26 @@ To compile SPITZ just issue:
 There is a very simple example that calculates pi using Monte-Carlo
 algorithm in the directory _examples_. To run the test, execute
 
-    make test
+    cd build/examples
+    make test-pi-c test-pi-cpp
 
 Take a look at `examples/pi.c` to see how it was implemented. You might
-also want to read `examples/Makefile` to understand the build process.
+also want to read `examples/CMakeLists.txt` to understand the build
+process.
 
 ## System wide installation
 
 To install SPITZ in the default directory (/usr/local) issue the
 following command:
 
+    cd build
     make install
 
 If you want to change the prefix directory, issue:
 
-    make install prefix=/usr
+    cd build
+    cmake -DCMAKE_INSTALL_PREFIX=/usr
+    make install
 
 ## Troubleshooting
 
@@ -76,8 +85,9 @@ to the installation directory like so:
 
 # Reporting bugs
 
-If you find any bug you may report an issue in this repository. We will
-be very happy to fix them!
+If you find any bug you may report an issue in the github repository
+here: [github.com/ianliu/spitz/issues](github.com/ianliu/spitz/issues).
+We will be very happy to fix them!
 
 <!-- vim:tw=72:sw=4:et:sta:spell
 -->

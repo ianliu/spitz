@@ -21,7 +21,7 @@
 #ifndef __SPITZ_JOB_MANAGER_H__
 #define __SPITZ_JOB_MANAGER_H__
 
-#include <barray.h>
+#include <spitz/barray.h>
 
 void job_manager(int argc, char *argv[], char *so, struct byte_array *final_result);
 

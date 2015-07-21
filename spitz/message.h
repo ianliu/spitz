@@ -21,7 +21,7 @@
 #ifndef __SPITZ_MESSAGE_H__
 #define __SPITZ_MESSAGE_H__
 
-#include <barray.h>
+#include <spitz/barray.h>
 
 enum actor {
 	JOB_MANAGER = 0,
