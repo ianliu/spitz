@@ -83,6 +83,10 @@ to the installation directory like so:
 
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path/to/install/dir/lib
 
+# Roadmap
+
+SPITZ next goal is to remove the MPI dependency and implement its own communication protocol to better support machine failures and allow dynamic provisioning.
+
 # Reporting bugs
 
 If you find any bug you may report an issue in the github repository
