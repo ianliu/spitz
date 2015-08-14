@@ -1,6 +1,8 @@
 include_directories(${MPI_INCLUDE_PATH} ${NANOMSG_INCLUDE_DIRS})
 
 add_library(spitz barray.c spitz.c)
+set_target_properties(spitz PROPERTIES
+	POSITION_INDEPENDENT_CODE True)
 
 add_executable(spitz-bin
 	main.c cfifo.c log.c jobmanager.c message.c)
